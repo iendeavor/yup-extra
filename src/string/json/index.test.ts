@@ -31,3 +31,39 @@ it('should validate subtype (async)', async () => {
   expect(await schema.isValid('42')).toBe(false)
   expect(await schema.isValid('[42]')).toBe(false)
 })
+
+it('should throw error message if invalid (sync)', async () => {
+  expect.assertions(3)
+
+  try {
+    schema.validateSync('')
+  } catch (error) {
+    expect(error.params.json.message).toMatchInlineSnapshot(`"Unexpected end of JSON input"`)
+  }
+  try {
+    schema.validateSync('42')
+  } catch (error) {
+    expect(error.params.json.message).toMatchInlineSnapshot(
+      `"this must be a \`array\` type, but the final value was: \`42\`."`,
+    )
+  }
+  try {
+    schema.validateSync('[42]')
+  } catch (error) {
+    expect(error.params.json.message).toMatchInlineSnapshot(
+      `"[0] must be a \`string\` type, but the final value was: \`42\`."`,
+    )
+  }
+})
+
+it('should throw error message if invalid (async)', async () => {
+  expect(await schema.validate('').catch(error => error.params.json.message)).toMatchInlineSnapshot(
+    `"Unexpected end of JSON input"`,
+  )
+  expect(await schema.validate('42').catch(error => error.params.json.message)).toMatchInlineSnapshot(
+    `"this must be a \`array\` type, but the final value was: \`42\`."`,
+  )
+  expect(await schema.validate('[42]').catch(error => error.params.json.message)).toMatchInlineSnapshot(
+    `"[0] must be a \`string\` type, but the final value was: \`42\`."`,
+  )
+})
