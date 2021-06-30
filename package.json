@@ -1,6 +1,6 @@
 {
   "name": "yup-extra",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "yup-extra adds more useful methods that aren't included in the yup library",
   "homepage": "https://github.com/iendeavor/yup-extra#readme",
   "bugs": {
